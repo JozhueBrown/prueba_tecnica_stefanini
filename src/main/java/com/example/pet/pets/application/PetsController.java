@@ -2,6 +2,7 @@ package com.example.pet.pets.application;
 
 import com.example.pet.pets.application.dto.PetsRequest;
 import com.example.pet.pets.domain.incoming.PetsService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,7 +18,7 @@ public class PetsController {
     }
 
     @PostMapping()
-    public ResponseEntity<?> save(@RequestBody final PetsRequest request) throws Exception {
+    public ResponseEntity<?> save(@Valid @RequestBody final PetsRequest request) throws Exception {
         return new ResponseEntity<>(petsService.save(request), HttpStatus.CREATED);
     }
 

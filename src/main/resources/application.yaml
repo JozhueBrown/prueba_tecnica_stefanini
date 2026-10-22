@@ -1,3 +1,6 @@
 spring:
   application:
     name: pet
+
+petstore:
+  url: ${PETSTORE_URL:https://petstore.swagger.io/v2/pet}

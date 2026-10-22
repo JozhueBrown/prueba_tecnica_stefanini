@@ -5,6 +5,7 @@ import com.example.pet.pets.application.dto.PetsRequest;
 import com.example.pet.pets.domain.incoming.error.PetException;
 import com.example.pet.pets.domain.outgoing.PetRepository;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.client.RestClientResponseException;
@@ -15,6 +16,9 @@ import org.springframework.web.client.RestTemplate;
 @Slf4j
 public class PetSwaggerRepository implements PetRepository {
 
+    @Value("${petstore.url}")
+    private String url;
+
     private final RestTemplate restTemplate;
 
     public PetSwaggerRepository(RestTemplate restTemplate) {
@@ -24,7 +28,7 @@ public class PetSwaggerRepository implements PetRepository {
     @Override
     public PetDto getPetById(final Long id) throws Exception {
 
-        String resourceUrl = "https://petstore.swagger.io/v2/pet/" + id;
+        String resourceUrl = url + "/" + id;
         try {
 
             var response = restTemplate.getForEntity(resourceUrl, PetDto.class);
@@ -50,10 +54,8 @@ public class PetSwaggerRepository implements PetRepository {
     @Override
     public PetDto save(final PetsRequest request) throws  Exception{
 
-        String resourceUrl = "https://petstore.swagger.io/v2/pet";
-
         try {
-            var responsePet = restTemplate.postForObject(resourceUrl, request, PetDto.class);
+            var responsePet = restTemplate.postForObject(url, request, PetDto.class);
             PetDto pet = responsePet;
 
             return pet;
